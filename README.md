@@ -15,3 +15,21 @@ Default app created using python manage.py startapp blog
 	-	project url pattern -> project urls.py -> application urls.py
 	-	application url pattern -> application urls.py -> application views.py
 	-	application page rendered -> application views.py
+
+### application templates containing page content
+	- replace hard-coded html in the views file with html templates from the application templates directory
+	- create an html template file for each separate page
+	- create a base.html file to contain html which all template html files share
+	- a list containing temporary posts was created in views.py to test the logic and styling
+
+### CSS stylesheets
+	- place static stylesheets in a static application folder
+	- this Web project also uses bootstrap 4 styling
+	- bootstrap code was copied from the bootstrap starter template
+
+### Link references
+	- replace any hard-coded link references with urlpatterns contained in the application urls.py file
+	- this allows application link path references to be placed controlled by a single url pattern
+	- this avoids having to change link references in multiple places
+
+
