@@ -32,4 +32,14 @@ Default app created using python manage.py startapp blog
 	- this allows application link path references to be placed controlled by a single url pattern
 	- this avoids having to change link references in multiple places
 
+### Adding Admin
+	- prepare and create admin tables
+		- python manage.py makemigrations
+		- python manage.py migrate
+	- created admin superuser billg using powershell (not git bash)
+	- admin access is available via login at localhost:8000/admin/
+	
+
+
+
 
