@@ -92,6 +92,7 @@ Default app created using python manage.py startapp blog
 			# form for a new user
 			form = UserCreationForm()
 			return render(request, 'users/register.html', {'form': form})
+
 	- add register.html as a user template (extend blog/base.html)
 
 
@@ -99,9 +100,17 @@ Default app created using python manage.py startapp blog
 	- create UserRegisterForm which extends UserCreationForm to add eg. email field
 	- install django-crispy-forms to add extra styling and provide visual error feedback
 	- add crispy_forms to INSTALLED APPS and set CRISPY_TEMPLATE_PACK = 'bootstrap4'
-	- in register.html modify form printout to be {{ form|crispy}}
+	- in register.html modify form printout to be {{ form|crispy }}
 
-	
+### User Login and Logout
+	- use django default login view as a starting point
+	- import into project urls.py
+	- modify users views.py to redirect to the login page upon successful registration
+	- create login and logout html templates
+	- add conditional in the base template navbar to display login or logout display dependent upon login state	
+	- add url route and html template for user's profile
+	- add login_required decorator to the profile view to enforce user login upon access attempt to the profile page
+
 
 
 
