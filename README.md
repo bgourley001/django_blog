@@ -80,7 +80,29 @@ Default app created using python manage.py startapp blog
 
 		admin.site.register(Post)
 
+### User Registration
+	- create a separate app for user registration and login.
+		python manage.py startapp users
+	- add app to settings as an installed app
+	- add view to users view.py using django UserCreationForm
+
+		from django.contrib.auth.forms import UserCreationForm
+
+		def register(request):
+			# form for a new user
+			form = UserCreationForm()
+			return render(request, 'users/register.html', {'form': form})
+	- add register.html as a user template (extend blog/base.html)
+
+
+	- create a forms.py file in users to contain our modified forms
+	- create UserRegisterForm which extends UserCreationForm to add eg. email field
+	- install django-crispy-forms to add extra styling and provide visual error feedback
+	- add crispy_forms to INSTALLED APPS and set CRISPY_TEMPLATE_PACK = 'bootstrap4'
+	- in register.html modify form printout to be {{ form|crispy}}
+
 	
+
 
 
 
