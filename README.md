@@ -38,7 +38,61 @@ Default app created using python manage.py startapp blog
 		- python manage.py migrate
 	- created admin superuser billg using powershell (not git bash)
 	- admin access is available via login at localhost:8000/admin/
+
+### Databases, Migrations and add posts interactively
+	- Added Post database table via the orm model in models.py
+	- Migrate applied to add the table to the database
+	- Add posts to the database interactively using python manage.py shell
+	- import Post and User objects
+		from blog.models import Post
+		from django.contrib.auth.models import User
+	- Query User objects
+		User.objects.all()
+	- add a post and save it to the database
+		post_1 = Post(title='Blog 1', content='First Post Content!', author=user)
+		post_1.save()
+	- examine the post
+		post = Post.objects.first()
+		post.content ... 'First Post Content!'
+		post.date_posted ... datetime.datetime(2022, 4, 26, 10, 9, 4, 847204, tzinfo=datetime.timezone.utc)
+	- User object is contained in the post so user info can be retrieved directly via the post
+		post.author.email ... 'bgourley001@gmail.com'
+	- get all posts written by a particular user
+		user.post_set.all() ... <QuerySet [<Post: Blog 1>, <Post: Blog 2>]>
+	- create post for a user using that user's existing post_set, no need to specify author or specify save
+		user.post_set.create(title='Blog 3', content='Third Post Content!') ... <Post: Blog 3>
+	- replace dummy posts with posts from the database in the views.py file
+
+		from .models import posts
+
+		# Function to handle home page rendering
+		def home(request):
+		context = {
+			'posts': Post.objects.all()
+		}
+
+	- format dates in templates (from django date documentation)
+		post.date_posted|date:"F d, Y"
+
+	- Register Posts with admin (in admin.py)
+
+		from .models import Post
+
+		admin.site.register(Post)
+
 	
+
+
+
+
+
+
+
+
+
+	
+
+
 
 
 
