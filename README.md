@@ -111,8 +111,75 @@ Default app created using python manage.py startapp blog
 	- add url route and html template for user's profile
 	- add login_required decorator to the profile view to enforce user login upon access attempt to the profile page
 
+### Add Profile Picture
+	- To add fields to the existing user model, extend the model in users/models.py
+	- import the user model
+	- create a Profile class and add required field(s)
 
+		class Profile(models.Model):
+			user = models.OneToOneField(User, on_delete=models.CASCADE)
+			image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
+		def __str__(self):
+			return f'{self.user.username} Profile'
+
+	- run makemigrations and migrate to apply changes to the database
+	- in users/admin.py register the new Profile class with admin
+
+		from .models import Profile
+
+		admin.site.register(Profile)
+
+	- set MEDIA_ROOT and MEDIA_URL in settings.py to set the filesystem location where uploaded media files will be stored and set a URL to that location.
+
+		MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+		MEDIA_URL = '/media/'
+
+	- add html to profile.html to display profile image and info
+
+		<div class="content-section">
+      		<div class="media">
+        		<img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        	<div class="media-body">
+          		<h2 class="account-heading">{{ user.username }}</h2>
+          		<p class="text-secondary">{{ user.email }}</p>
+        	</div>
+      	</div>
+      		<!-- FORM HERE -->
+    	</div>
+
+    - add media url to project urls
+
+    	from django.conf import settings
+		from django.conf.urls.static import static
+
+		...
+
+		if settings.DEBUG:
+    		urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    - create a signals.py file at project level to handle django signals
+    - add create_profile and save_profile functions in signals.py to create a profile when a new user is created, and save the profile when the user object is saved.
+
+    	from django.db.models.signals import post_save
+		from django.contrib.auth.models import User
+		from django.dispatch import receiver
+		from .models import Profile
+
+		# create profile when new user is created
+		@receiver(post_save, sender=User)
+		def create_profile(sender, instance, created, **kwargs):
+			if created:
+				Profile.objects.create(user=instance)
+
+		# save profile when user object is saved
+		@receiver(post_save, sender=User)
+		def save_profile(sender, instance, **kwargs):
+			instance.profile.save()
+
+	- import users.signals within the users apps.py file
+
+	
 
 
 
