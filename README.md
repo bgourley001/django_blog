@@ -185,6 +185,10 @@ Default app created using python manage.py startapp blog
 	- override save_model to resize image when uploading using Pillow
 	- added profile image to user posts on home page
 
+### List, Create, Update, Delete Posts
+	- Use django class views to implement List, Create, Update and Delete posts
+	- replace function views with class view implementations in the post templates
+	
 
 
 
