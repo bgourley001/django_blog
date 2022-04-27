@@ -179,7 +179,12 @@ Default app created using python manage.py startapp blog
 
 	- import users.signals within the users apps.py file
 
-	
+### Update User Profile
+	- update users/forms.py with UpdateUserForm and UpdateProfileForm
+	- modify profile.html to display both forms on the same form
+	- override save_model to resize image when uploading using Pillow
+	- added profile image to user posts on home page
+
 
 
 
