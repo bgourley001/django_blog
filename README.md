@@ -189,6 +189,44 @@ Default app created using python manage.py startapp blog
 	- Use django class views to implement List, Create, Update and Delete posts
 	- replace function views with class view implementations in the post templates
 	
+### Pagination
+	- In the PostListView add paginate_by = <number of posts per page>
+	- in home.html add the page navigation logic and buttons
+
+		{% if is_paginated %}
+		{% if page_obj.has_previous %}
+			<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+		{% endif %}
+		
+		{%  for num in page_obj.paginator.page_range %}
+			{% if page_obj.number == num %}
+				<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+				<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% endif %}
+		{% endfor %}
+		
+		{% if page_obj.has_next %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+		{% endif %}
+	{% endif %}	
+
+### Display posts by selected user
+	- Create a UserPostListView in home.html and a user_posts.html template
+	- Add a get_queryset function to get posts from a spefic user
+
+		class UserPostListView(ListView):
+		model = Post
+		# sets variables to use existing naming
+		template_name = 'blog/user_posts.html' # <app>/<model>_<viewtype>.html
+		context_object_name = 'posts'
+		paginate_by = 5
+
+		def get_queryset(self):
+			user = get_object_or_404(User, username=self.kwargs.get('username'))
+			return Post.objects.filter(author=user).order_by('-date_posted')	
 
 
 
